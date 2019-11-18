@@ -16,9 +16,9 @@ class User
   end
 
   def self.save(name, email, password, pictures, albums)
-    database.execute(
-      "INSERT INTO users (name, email, password, pictures, albums)
-      VALUES (?, ?, ?, ?, ?)", name, email, password, pictures, albums
-    )
+    query = DB.prepare(
+      "INSERT INTO Users VALUES (?, ?, ?, ?, ?)"
+      )
+    query.execute(name, email, password, pictures, albums)
   end
 end

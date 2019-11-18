@@ -14,9 +14,9 @@ class Album
   end
 
   def self.save(name, user, pictures)
-    database.execute(
-      "INSERT INTO albums (name, user, pictures)
-      VALUES (?, ?, ?)", name, user, pictures
-    )
+    query = DB.prepare(
+      "INSERT INTO Albums VALUES (?, ?, ?)"
+      )
+    query.execute(name, user, pictures)
   end
 end

@@ -13,9 +13,9 @@ class Location
   end
 
   def self.save(picture, directory)
-    database.execute(
-      "INSERT INTO locations (picture, directory)
-      VALUES (?, ?)", picture, directory
-    )
+    query = DB.prepare(
+      "INSERT INTO Locations VALUES (?, ?)"
+      )
+    query.execute(picture, directory)
   end
 end
