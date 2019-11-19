@@ -14,13 +14,14 @@ require "action_view/railtie"
 require "action_cable/engine"
 # require "sprockets/railtie"
 require "rails/test_unit/railtie"
-
+require 'sequel'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
 module PhotoApi
   class Application < Rails::Application
+    DB = Sequel.connect('mysql2://root:my_password@localhost:3306/photo_api_development')
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 

@@ -15,6 +15,7 @@ gem 'puma', '~> 4.1'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'active_model_serializers', '~> 0.10.7'
 gem 'mysql2'
+gem 'sequel'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
