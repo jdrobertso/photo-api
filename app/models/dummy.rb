@@ -18,11 +18,7 @@ class Dummy
       "INSERT INTO Dummy VALUES (?, ?, ?)"
       )
     query.execute(id, name, number)
-    query = DB.prepare(
-      "SELECT * FROM Dummy WHERE id=?"
-    )
-    new_record = query.execute(id)
-    @@all << new_record.first
+    add_to_all(id)
     true
   end
 
@@ -50,7 +46,7 @@ class Dummy
       "DELETE FROM Dummy WHERE id=?"
     )
     query.execute(id)
-    @@all.delete_if { |record| record.id == id }
+    delete_from_all(id)
     true
   end
 
@@ -61,11 +57,16 @@ class Dummy
       "UPDATE Dummy SET ?=? WHERE id=?"
     )
     query.execute(record, value, id)
+    delete_from_all(id)
+    add_to_all(id)
+  end
+
+  def self.delete_from_all(id)
     @@all.delete_if { |record| record.id == id }
-    query = DB.prepare(
-      "SELECT * FROM Dummy WHERE id=?"
-    )
-    result = query = DB.execute(id)
-    @@all << result.first
+  end
+
+  def self.add_to_all(id)
+    result = Dummy.find(id)
+    @@all << result
   end
 end
