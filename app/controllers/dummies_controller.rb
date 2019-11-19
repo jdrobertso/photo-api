@@ -1,4 +1,4 @@
-class DummyController < ApplicationController
+class DummiesController < ApplicationController
   before_action :set_dummy, only: [:show, :update, :destroy]
 
   # GET /dummies

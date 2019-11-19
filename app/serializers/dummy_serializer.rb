@@ -1,3 +1,3 @@
-class DummySerializer < ActiveModel::Serializer
+class DummiesSerializer < ActiveModel::Serializer
   attributes :id, :name, :number
 end
