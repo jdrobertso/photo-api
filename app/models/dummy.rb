@@ -10,34 +10,29 @@ class Dummy
   end
 
   def self.all
-    results = DB.query(
-      "SELECT * FROM Albums"
-    )
-    results.each do |row|
-      @@all << row
-    end
     @@all
   end
 
   def self.save(id, name, number)
     query = DB.prepare(
-      "INSERT INTO Albums VALUES (?, ?, ?)"
+      "INSERT INTO Dummy VALUES (?, ?, ?)"
       )
     query.execute(id, name, number)
+    query = DB.prepare(
+      "SELECT * FROM Dummy WHERE id=?"
+    )
+    new_record = query.execute(id)
+    @@all << new_record.first
+    true
   end
 
   def self.find(id)
     query = DB.prepare(
-      "SELECT * FROM Albums WHERE id=?"
+      "SELECT * FROM Dummy WHERE id=?"
     )
     results = query.execute(id)
-    if results.count == 1
-      return results.first
-    elsif results.count > 1
-      @@errors << raise "Too many results found."
-    else
-      @@errors << raise "No result found."
-    end
+    return results.first if results.count == 1
+    false
   end
 
   def self.update(params)
@@ -47,6 +42,7 @@ class Dummy
     if params.number != number
       update_record("number", params.number)
     end
+    true
   end
 
   def self.destroy
@@ -54,14 +50,22 @@ class Dummy
       "DELETE FROM Dummy WHERE id=?"
     )
     query.execute(id)
+    @@all.delete_if { |record| record.id == id }
+    true
   end
 
   private
 
   def update_record(record, value)
     query = DB.prepare(
-      "UPDATE Dummy SET ?=?"
+      "UPDATE Dummy SET ?=? WHERE id=?"
     )
-    query.execute(record, value)
+    query.execute(record, value, id)
+    @@all.delete_if { |record| record.id == id }
+    query = DB.prepare(
+      "SELECT * FROM Dummy WHERE id=?"
+    )
+    result = query = DB.execute(id)
+    @@all << result.first
   end
 end

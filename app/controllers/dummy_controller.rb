@@ -1,51 +1,51 @@
-class AlbumsController < ApplicationController
-  before_action :set_album, only: [:show, :update, :destroy]
+class DummyController < ApplicationController
+  before_action :set_dummy, only: [:show, :update, :destroy]
 
-  # GET /albums
+  # GET /dummies
   def index
-    @albums = Album.all
+    @dummies = Dummy.all
 
-    render json: @albums
+    render json: @dummies
   end
 
-  # GET /albums/1
+  # GET /dummies/1
   def show
-    render json: @album
+    render json: @dummies
   end
 
-  # POST /albums
+  # POST /dummies
   def create
-    @album = Album.new(album_params)
+    @dummy = Dummy.new(dummy_params)
 
-    if @album.save
-      render json: @album, status: :created, location: @album
+    if @dummy.save
+      render json: @dummy, status: :created, location: @dummy
     else
-      render json: @album.errors, status: :unprocessable_entity
+      render json: @dummy.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /albums/1
+  # PATCH/PUT /dummies/1
   def update
-    if @album.update(album_params)
-      render json: @album
+    if @dummy.update(dummy_params)
+      render json: @dummy
     else
-      render json: @album.errors, status: :unprocessable_entity
+      render json: @dummy.errors, status: :unprocessable_entity
     end
   end
 
-  # DELETE /albums/1
+  # DELETE /dummies/1
   def destroy
-    @album.destroy
+    @dummy.destroy
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_album
-      @album = Album.find(params[:id])
+    def set_dummy
+      @dummy = Dummy.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
-    def album_params
-      params.require(:album).permit(:name, :number)
+    def dummy_params
+      params.require(:dummy).permit(:name, :number)
     end
 end

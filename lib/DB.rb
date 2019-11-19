@@ -7,7 +7,7 @@ DB = Mysql2::Client.new(:host => "localhost", :username => "root", :password => 
 DB.query("DROP TABLE IF EXISTS Dummy")
 
 DB.query("CREATE TABLE Dummy (
-  id int NOT NULL,
+  id int NOT NULL UNIQUE,
   name varchar(255),
   number int,
   PRIMARY KEY (id)
