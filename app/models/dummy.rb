@@ -1,5 +1,5 @@
 class Dummy
-  attr_accessor :name, :number
+  attr_accessor :name, :number, :id
   @@all = []
   @@errors = []
 
@@ -22,12 +22,21 @@ class Dummy
     true
   end
 
+  def save
+    query = DB.prepare(
+      "INSERT INTO Dummy VALUES (?, ?, ?)"
+    )
+    query.execute(id, name, number)
+    Dummy.add_to_all(id)
+    true
+  end
+
   def self.find(id)
     query = DB.prepare(
       "SELECT * FROM Dummy WHERE id=?"
     )
     results = query.execute(id)
-    return results.first if results.count == 1
+    return Dummy.new(results.first["id"], results.first["name"], results.first["number"]) if results.count == 1
     false
   end
 
@@ -41,12 +50,12 @@ class Dummy
     true
   end
 
-  def self.destroy
+  def destroy
     query = DB.prepare(
       "DELETE FROM Dummy WHERE id=?"
     )
     query.execute(id)
-    delete_from_all(id)
+    Dummy.delete_from_all(id)
     true
   end
 
