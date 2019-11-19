@@ -21,4 +21,18 @@ class User
       )
     query.execute(name, email, password, pictures, albums)
   end
+
+  def self.id(name)
+    query = DB.prepeare(
+      "SELECT id FROM Users WHERE name = ?"
+    )
+    result = query.execute(name)
+    if result.count == 1
+      return result.first
+    elsif result.count > 1
+      raise "Too many results found."
+    else
+      raise "No results found."
+    end
+  end
 end
