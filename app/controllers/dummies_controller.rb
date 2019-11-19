@@ -41,7 +41,7 @@ class DummiesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_dummy
-      @dummy = Dummy.find(params[:id])
+      @dummy = Dummy[params[:id]]
     end
 
     # Only allow a trusted parameter "white list" through.
