@@ -21,7 +21,8 @@ Bundler.require(*Rails.groups)
 
 module PhotoApi
   class Application < Rails::Application
-    DB = Sequel.connect('mysql2://root:my_password@localhost:3306/photo_api_development')
+    user_pass = ENV["DB_USER_PASS"]
+    DB = Sequel.connect("mysql2://#{user_pass}@localhost:3306/photo_api_development")
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
