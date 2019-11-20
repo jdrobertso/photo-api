@@ -46,6 +46,7 @@ class DummiesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def dummy_params
-      params.require(:dummy).permit(:name, :number)
+      res = ActiveModelSerializers::Deserialization.jsonapi_parse(params, polymorphic: [:dummy])
+      res
     end
 end
