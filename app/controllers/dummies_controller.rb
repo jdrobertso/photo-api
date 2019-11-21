@@ -26,7 +26,7 @@ class DummiesController < ApplicationController
 
   # PATCH/PUT /dummies/1
   def update
-    if @dummy.update(dummy_params)
+    if @dummy.update_fields(dummy_params, [:name, :number])
       render json: @dummy
     else
       render json: @dummy.errors, status: :unprocessable_entity
