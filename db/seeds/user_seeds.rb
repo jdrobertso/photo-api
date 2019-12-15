@@ -1,33 +1,35 @@
 require 'faker'
 
-DB.transaction do
-  100.times do
-    password = Faker::Lorem.word
-    user = User.new(username: Faker::Name.first_name, email: Faker::Internet.email, password: password, password_confirmation: password)
-    pictures = new_pictures(user)
-    albums = new_albums(user)
-    user.pictures = pictures
-    user.albums = albums
-    user.save
+def new_pictures(user)
+  20.times do
+    picture = fake_picture(user)
+    picture.save
+    user.add_picture(picture)
   end
+end
 
-  def new_pictures(user)
-    pictures = []
-    20 times do
-      pictures << Picture.new(name: Faker::Lorem.word, user: user)
-    end
-    pictures
-  end
+def fake_picture(user)
+  Picture.new(name: Faker::Lorem.word, user: user, image_data: 'x')
+end
 
-  def new_albums(user)
-    albums = []
-    20 times do
-      album = Album.new(name: Faker::Lorem.word, user: user)
-      pictures = [new_pictures(user)]
-      album.pictures = pictures
-      albums << album
-      album.save
+def new_albums(user)
+  20.times do
+    album = Album.new(name: Faker::Lorem.word, user: user)
+    album.save
+    20.times do
+      album.add_picture(fake_picture(user))
     end
-    albums
+    album.save
+    user.add_album(album)
   end
+end
+
+100.times do
+  password = Faker::Lorem.word
+  user = User.new(username: Faker::Name.unique.first_name, email: Faker::Internet.unique.email, password: password, password_confirmation: password)
+  user.save
+  new_pictures(user)
+  new_albums(user)
+  puts "User done, id: #{user.id}"
+  user.save
 end
